@@ -58,6 +58,77 @@ button, input {
   margin: 4px 6px 4px 0;
 }
 .err { color: #b42318; }
+.ok { color: #2f7a43; }
+.warn { color: #b45a18; }
 .hint { color: #6b5a48; font-size: 0.92em; }
 label { display: block; margin: 8px 0; }
 .topbar { display: flex; justify-content: space-between; align-items: baseline; }
+
+.shell {
+  max-width: 920px;
+  margin: 0 auto;
+  padding: 28px 20px 60px;
+}
+.topnav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  border-bottom: 2px solid #e6d5a5;
+  padding-bottom: 12px;
+}
+.topnav h1 { margin: 0; font-size: 1.4em; }
+.navrow { display: flex; gap: 8px; align-items: center; }
+.navbtn {
+  border: 1px solid #c9a227;
+  background: #fff8e8;
+  color: var(--ink);
+  border-radius: 8px;
+  cursor: pointer;
+}
+.navbtn.on { background: var(--gold); color: #fff; }
+.navbtn.logout { border-color: #b8a888; background: #f4efe4; }
+.sub { color: #6b5a48; margin: 12px 0 4px; }
+
+.cards-page { margin-top: 16px; }
+.card-bar, .card-form {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 12px;
+  background: #fff;
+  border: 1px solid #e4d8bf;
+  border-radius: 12px;
+  padding: 12px 16px;
+  margin: 12px 0;
+}
+.card-form label, .card-bar label { display: flex; flex-direction: column; margin: 0; }
+.card-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+}
+.card-table th, .card-table td {
+  border-bottom: 1px solid #eee2c8;
+  padding: 10px 12px;
+  text-align: left;
+  font-size: 0.95em;
+}
+.card-table tr.voided td { color: #9a8f7d; }
+.tag {
+  display: inline-block;
+  margin-left: 8px;
+  padding: 1px 8px;
+  border-radius: 999px;
+  font-size: 0.82em;
+}
+.tag.ok { background: #dff0e2; color: #2f7a43; }
+.tag.bad { background: #f8ded6; color: #b42318; }
+button.danger { border-color: #b42318; color: #b42318; background: #fff; }
+select {
+  font: inherit;
+  padding: 8px 10px;
+}

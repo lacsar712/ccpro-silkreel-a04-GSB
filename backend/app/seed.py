@@ -28,6 +28,13 @@ async def seed_demo() -> None:
 
         mill = (await session.execute(select(Filature))).scalars().first()
         if mill:
+            # 既有演示库也收敛到「恰一盆已缫完」；回潮卡留空，由现场新建。
+            basins = (
+                await session.execute(select(Basin).where(Basin.filature_id == mill.id))
+            ).scalars().all()
+            by_code = {b.code: b for b in basins}
+            if "丙-2" in by_code and by_code["丙-2"].status != Basin.STATUS_REELING:
+                by_code["丙-2"].status = Basin.STATUS_REELING
             await session.commit()
             return
 
@@ -41,7 +48,7 @@ async def seed_demo() -> None:
             ("乙-1", Basin.STATUS_REELED, 39.2, 2),
             ("乙-2", Basin.STATUS_REELING, 36.0, 3),
             ("丙-1", Basin.STATUS_SOAKING, None, 4),
-            ("丙-2", Basin.STATUS_REELED, 41.0, 5),
+            ("丙-2", Basin.STATUS_REELING, 41.0, 5),
         ]
         for code, status, temp, idx in specs:
             basin = Basin(filature_id=mill.id, code=code, status=status, ring_index=idx)
