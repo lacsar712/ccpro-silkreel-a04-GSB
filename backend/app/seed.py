@@ -35,13 +35,14 @@ async def seed_demo() -> None:
         session.add(mill)
         await session.flush()
         now = utcnow()
+        # 种子：一盆已缫完（乙-1），零张回潮卡。
         specs = [
             ("甲-1", Basin.STATUS_REELING, 40.5, 0),
             ("甲-2", Basin.STATUS_SOAKING, None, 1),
             ("乙-1", Basin.STATUS_REELED, 39.2, 2),
             ("乙-2", Basin.STATUS_REELING, 36.0, 3),
             ("丙-1", Basin.STATUS_SOAKING, None, 4),
-            ("丙-2", Basin.STATUS_REELED, 41.0, 5),
+            ("丙-2", Basin.STATUS_REELING, 41.0, 5),
         ]
         for code, status, temp, idx in specs:
             basin = Basin(filature_id=mill.id, code=code, status=status, ring_index=idx)

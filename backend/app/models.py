@@ -1,6 +1,16 @@
 from datetime import datetime, timezone
 
-from sqlalchemy import DateTime, Float, ForeignKey, Integer, String, Text, UniqueConstraint
+from sqlalchemy import (
+    DateTime,
+    Float,
+    ForeignKey,
+    Index,
+    Integer,
+    String,
+    Text,
+    UniqueConstraint,
+    text,
+)
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
 
 
@@ -46,6 +56,7 @@ class Basin(Base):
     notes: Mapped[str] = mapped_column(Text, default="")
     filature: Mapped[Filature] = relationship(back_populates="basins")
     readings: Mapped[list["BathReading"]] = relationship(back_populates="basin")
+    moisture_cards: Mapped[list["MoistureCard"]] = relationship(back_populates="basin")
 
 
 class BathReading(Base):
@@ -57,3 +68,26 @@ class BathReading(Base):
     water_temp_c: Mapped[float] = mapped_column(Float)
     operator: Mapped[str] = mapped_column(String(64), default="")
     basin: Mapped[Basin] = relationship(back_populates="readings")
+
+
+class MoistureCard(Base):
+    """茧层回潮卡：已缫完拨回浸茧的放行凭证。同一盆未作废卡最多一张。"""
+
+    __tablename__ = "moisture_cards"
+    __table_args__ = (
+        Index(
+            "uq_moisture_cards_active_basin",
+            "basin_id",
+            unique=True,
+            postgresql_where=text("voided_at IS NULL"),
+            sqlite_where=text("voided_at IS NULL"),
+        ),
+    )
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    basin_id: Mapped[int] = mapped_column(ForeignKey("basins.id"))
+    moisture_pct: Mapped[float] = mapped_column(Float)
+    measured_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)
+    measured_by: Mapped[str] = mapped_column(String(64), default="")
+    voided_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+    basin: Mapped[Basin] = relationship(back_populates="moisture_cards")

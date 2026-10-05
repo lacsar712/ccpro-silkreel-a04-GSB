@@ -1,4 +1,5 @@
 const TOKEN_KEY = "silkreel_token";
+const ROLE_KEY = "silkreel_role";
 
 export function token() {
   return localStorage.getItem(TOKEN_KEY) || "";
@@ -10,6 +11,15 @@ export function setToken(value) {
 
 export function clearToken() {
   localStorage.removeItem(TOKEN_KEY);
+  localStorage.removeItem(ROLE_KEY);
+}
+
+export function role() {
+  return localStorage.getItem(ROLE_KEY) || "";
+}
+
+export function setRole(value) {
+  localStorage.setItem(ROLE_KEY, value);
 }
 
 export async function api(path, options = {}) {
